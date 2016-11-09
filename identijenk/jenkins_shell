@@ -1,3 +1,4 @@
+cd identidock
 #Default compose args
 COMPOSE_ARGS=" -f jenkins.yml -p jenkins "
 
