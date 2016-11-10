@@ -1,6 +1,7 @@
-FROM jenkins:1.609.3
-USER root
+FROM jenkins:2.19.2
+MAINTAINER Yang Dong "andyyoung01@gmail.com"
 
+USER root
 RUN echo "deb http://apt.dockerproject.org/repo debian-jessie main" \
           > /etc/apt/sources.list.d/docker.list \
       && apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 \
@@ -10,12 +11,12 @@ RUN echo "deb http://apt.dockerproject.org/repo debian-jessie main" \
       && apt-get install -y sudo \
       && apt-get install -y docker-engine \
       && rm -rf /var/lib/apt/lists/*
+	  
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 
-RUN curl -L https://github.com/docker/compose/releases/download/1.4.1/\
+RUN curl -L https://github.com/docker/compose/releases/download/1.8.0/\
 docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose; \
-    chmod +x /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 
 USER jenkins
-COPY plugins.txt /usr/share/jenkins/plugins.txt
-RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
+RUN /usr/local/bin/install-plugins.sh scm-api git-client git greenballs
